@@ -1,13 +1,14 @@
 import React from 'react';
 import { VoiceAssistantState } from '../types';
-import { Wifi, WifiOff, Volume2, VolumeX, Cpu, Activity } from 'lucide-react';
+import { Wifi, WifiOff, Volume2, VolumeX, Cpu, Activity, Brain, BrainCircuit } from 'lucide-react';
 
 interface StatusPanelProps {
   state: VoiceAssistantState;
   isOnline: boolean;
+  isAIEnabled?: boolean;
 }
 
-export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline }) => {
+export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline, isAIEnabled = false }) => {
   const statusItems = [
     {
       icon: isOnline ? Wifi : WifiOff,
@@ -32,6 +33,12 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline }) => 
       label: 'Status',
       value: state.isActive ? 'Ready' : 'Standby',
       color: state.isActive ? 'text-green-400' : 'text-gray-400'
+    },
+    {
+      icon: isAIEnabled ? Brain : BrainCircuit,
+      label: 'AI Mode',
+      value: isAIEnabled ? 'Enabled' : 'Disabled',
+      color: isAIEnabled ? 'text-purple-400' : 'text-gray-400'
     }
   ];
 
@@ -39,13 +46,13 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline }) => 
     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6">
       <h3 className="text-xl font-semibold text-white mb-4">System Status</h3>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {statusItems.map((item, index) => (
-          <div key={index} className="flex items-center space-x-3">
+          <div key={index} className="flex items-center space-x-2">
             <item.icon className={`w-5 h-5 ${item.color}`} />
             <div>
-              <p className="text-sm text-gray-300">{item.label}</p>
-              <p className={`text-sm font-medium ${item.color}`}>{item.value}</p>
+              <p className="text-xs text-gray-300">{item.label}</p>
+              <p className={`text-xs font-medium ${item.color}`}>{item.value}</p>
             </div>
           </div>
         ))}
@@ -56,6 +63,11 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline }) => 
           <span className="text-gray-300">Commands Processed</span>
           <span className="text-blue-400 font-medium">{state.commandHistory.length}</span>
         </div>
+        {!isAIEnabled && (
+          <div className="mt-2 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs text-yellow-400">
+            Add OpenAI API key for intelligent responses
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { Bot, Sparkles } from 'lucide-react';
 
 function App() {
-  const { state, toggleListening } = useVoiceAssistant();
+  const { state, isAIEnabled, toggleListening } = useVoiceAssistant();
   const isOnline = useOnlineStatus();
 
   return (
@@ -50,7 +50,7 @@ function App() {
 
           {/* Status Panel */}
           <div className="space-y-6">
-            <StatusPanel state={state} isOnline={isOnline} />
+            <StatusPanel state={state} isOnline={isOnline} isAIEnabled={isAIEnabled} />
             
             {/* Quick Actions */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6">
@@ -71,6 +71,11 @@ function App() {
                 <div className="p-2 bg-gray-700/50 rounded text-gray-300">
                   "Help"
                 </div>
+                {isAIEnabled && (
+                  <div className="p-2 bg-purple-500/20 rounded text-purple-300 border border-purple-500/30">
+                    "Ask me anything!" (AI-powered)
+                  </div>
+                )}
               </div>
             </div>
 
@@ -90,6 +95,12 @@ function App() {
                   <span>Text-to-Speech:</span>
                   <span className="text-green-400">✓ Ready</span>
                 </div>
+                <div className="flex justify-between">
+                  <span>AI Integration:</span>
+                  <span className={isAIEnabled ? "text-green-400" : "text-yellow-400"}>
+                    {isAIEnabled ? "✓ Active" : "⚠ Setup Required"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +108,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-12 text-gray-400">
-          <p>Built with React, TypeScript, and Web Speech API</p>
+          <p>Built with React, TypeScript, Web Speech API {isAIEnabled && '& OpenAI'}</p>
         </footer>
       </div>
     </div>

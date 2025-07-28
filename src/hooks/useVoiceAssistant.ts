@@ -15,6 +15,7 @@ export const useVoiceAssistant = () => {
 
   const [speechService] = useState(() => new SpeechService());
   const [commandService] = useState(() => new CommandService());
+  const [isAIEnabled] = useState(() => commandService.isAIEnabled());
 
   const addCommand = useCallback((text: string, type: 'user' | 'assistant', response?: string) => {
     const command: Command = {
@@ -99,6 +100,7 @@ export const useVoiceAssistant = () => {
 
   return {
     state,
+    isAIEnabled,
     startListening,
     stopListening,
     toggleListening,

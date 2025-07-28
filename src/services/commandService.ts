@@ -1,6 +1,9 @@
 import { MusicLibrary, NewsArticle } from '../types';
+import { OpenAIService } from './openaiService';
 
 export class CommandService {
+  private openaiService: OpenAIService;
+  
   private musicLibrary: MusicLibrary = {
     stealth: "https://www.youtube.com/watch?v=U47Tr9BB_wE",
     march: "https://www.youtube.com/watch?v=Xqeq4b5u_Xw",
@@ -11,6 +14,10 @@ export class CommandService {
     "imagine": "https://www.youtube.com/watch?v=YkgkThdzX-8",
     "shape of you": "https://www.youtube.com/watch?v=JGwWNGJdvx8"
   };
+
+  constructor() {
+    this.openaiService = new OpenAIService();
+  }
 
   async processCommand(command: string): Promise<string> {
     const cmd = command.toLowerCase().trim();
@@ -77,8 +84,17 @@ export class CommandService {
         return 'I can help you open websites, play music, get news, tell time, and much more. Just speak naturally!';
       }
 
-      // Default response for unrecognized commands
-      return `I heard "${command}" but I'm not sure how to help with that. Try asking me to open a website, play music, or get news.`;
+      // Use AI for unrecognized commands if available
+      if (this.openaiService.isAvailable()) {
+        try {
+          return await this.openaiService.processWithAI(command);
+        } catch (error) {
+          console.error('AI processing failed:', error);
+          return `I heard "${command}" but I'm not sure how to help with that. Try asking me to open a website, play music, or get news.`;
+        }
+      } else {
+        return `I heard "${command}" but I'm not sure how to help with that. Try asking me to open a website, play music, or get news. (AI features require OpenAI API key)`;
+      }
 
     } catch (error) {
       console.error('Error processing command:', error);
@@ -119,5 +135,9 @@ export class CommandService {
 
   getMusicLibrary(): MusicLibrary {
     return { ...this.musicLibrary };
+  }
+
+  isAIEnabled(): boolean {
+    return this.openaiService.isAvailable();
   }
 }
