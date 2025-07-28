@@ -65,7 +65,7 @@ export const StatusPanel: React.FC<StatusPanelProps> = ({ state, isOnline, isAIE
         </div>
         {!isAIEnabled && (
           <div className="mt-2 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded text-xs text-yellow-400">
-            Add OpenAI API key for intelligent responses
+            Add DeepSeek API key for intelligent responses
           </div>
         )}
       </div>

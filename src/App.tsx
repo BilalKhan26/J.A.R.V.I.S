@@ -73,7 +73,7 @@ function App() {
                 </div>
                 {isAIEnabled && (
                   <div className="p-2 bg-purple-500/20 rounded text-purple-300 border border-purple-500/30">
-                    "Ask me anything!" (AI-powered)
+                    "Ask me anything!" (DeepSeek AI)
                   </div>
                 )}
               </div>
@@ -108,7 +108,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-12 text-gray-400">
-          <p>Built with React, TypeScript, Web Speech API {isAIEnabled && '& OpenAI'}</p>
+          <p>Built with React, TypeScript, Web Speech API {isAIEnabled && '& DeepSeek AI'}</p>
         </footer>
       </div>
     </div>
